@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Sample</title>
+    <script src="mus.js"></script>
+    <style>
+        #one{
+            margin-left: 50%;
+            margin-top: 25%;
+        }
+
+        #two{
+            margin-left: 30%;
+            margin-top: 0%;
+        }
+
+        #three{
+            margin-left: 50%;
+            margin-top: 25%;
+        }
+    
+    </style>
+
+
+</head>
+
+<body>
+    <script type="text/javascript">
+        var mus = new Mus();
+        function startRecording(){
+            mus.record();
+        }
+        function generateCsv(rows){
+          let csvContent = "data:text/csv;charset=utf-8,";
+          
+          rows.forEach(function(rowArray) {
+                       let row = rowArray.join(",");
+                       csvContent += row + "\r\n";
+                       });
+           console.log(csvContent);
+           var encodedUri = encodeURI(csvContent);
+           var link = document.createElement("a");
+           link.setAttribute("href", encodedUri);
+           link.setAttribute("download", "my_data.csv");
+           document.body.appendChild(link);
+           link.click();
+        }
+    
+       function stopRecording(){
+           var rows = [];
+           mus.stop();
+           var x = mus.getData();
+           rows = x.frames;
+           console.log(rows);
+           generateCsv(rows);
+       }
+    </script>
+    <button id="start" onClick="startRecording()">Start</button>
+    <button id="one">First</button>
+    <button id="two">Second</button>
+    <button id="three">Three</button>
+    <button id="submit" onClick="stopRecording()">Submit</button>
+    
+</body>
+</html>
